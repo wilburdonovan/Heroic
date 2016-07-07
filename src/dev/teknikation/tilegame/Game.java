@@ -5,7 +5,9 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import dev.teknikation.tilegame.display.Display;
+import dev.teknikation.tilegame.gfx.Assets;
 import dev.teknikation.tilegame.gfx.ImageLoader;
+import dev.teknikation.tilegame.gfx.SpriteSheet;
 
 public class Game implements Runnable {
 	
@@ -19,6 +21,8 @@ public class Game implements Runnable {
 	private BufferStrategy bs;
 	private Graphics g;
 	
+	int x = 0;
+
 	
 	public Game (String title, int width, int height) {
 		this.title = title;
@@ -28,10 +32,11 @@ public class Game implements Runnable {
 	
 	private void init () {
 		display = new Display (title, width, height);
+		Assets.init();
 	}
 	
 	private void tick() {
-		
+		x++;
 	}
 	
 	private void render() {
@@ -45,7 +50,7 @@ public class Game implements Runnable {
 		g.clearRect(0, 0, width, height);
 		
 		//Draw Here
-
+		g.drawImage(Assets.goldCoin, x, 50, null);
 		
 		//End Drawing
 		bs.show(); // does all the buffer magic before sending to canvas
@@ -55,9 +60,32 @@ public class Game implements Runnable {
 	public void run () {
 		init ();
 		
+		int fps = 60; //Number of frames you waant per second
+		double timePerTick = 1000000000 / fps; //Maximum amount of time in nanosecs to execute tick and render
+		double delta = 0; //Amount of time we have before we have to call tick and render again 
+		long now; //Current time of computer in nanoseconds
+		long lastTime = System.nanoTime(); //The last time tick and render were called
+		long timer = 0; //Counts the time until one second
+		int ticks = 0; //Number of times the tick and render methods are called
+		
 		while (running) {
-			tick();
-			render();
+			now = System.nanoTime();
+			delta += (now - lastTime)/timePerTick;
+			timer += now - lastTime;
+			lastTime = now;
+			
+			if (delta >= 1) {
+				tick();
+				render();
+				ticks++;
+				delta --;
+			}
+			
+			if (timer >= 1000000000) {
+				System.out.println("Frames per second: " + ticks);
+				timer = 0;
+				ticks = 0;
+			}
 		}
 		
 		stop();
