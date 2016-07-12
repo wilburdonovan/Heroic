@@ -8,6 +8,8 @@ import dev.teknikation.tilegame.display.Display;
 import dev.teknikation.tilegame.gfx.Assets;
 import dev.teknikation.tilegame.gfx.ImageLoader;
 import dev.teknikation.tilegame.gfx.SpriteSheet;
+import dev.teknikation.tilegame.states.GameState;
+import dev.teknikation.tilegame.states.State;
 
 public class Game implements Runnable {
 	
@@ -21,9 +23,10 @@ public class Game implements Runnable {
 	private BufferStrategy bs;
 	private Graphics g;
 	
-	int x = 0;
-
+	// States
+	private State gameState;
 	
+
 	public Game (String title, int width, int height) {
 		this.title = title;
 		this.height = height;
@@ -33,10 +36,15 @@ public class Game implements Runnable {
 	private void init () {
 		display = new Display (title, width, height);
 		Assets.init();
+		
+		gameState = new GameState ();
+		State.setState(gameState);
 	}
 	
 	private void tick() {
-		x++;
+		if (State.getState() != null) {
+			State.getState().tick();
+		}
 	}
 	
 	private void render() {
@@ -50,7 +58,9 @@ public class Game implements Runnable {
 		g.clearRect(0, 0, width, height);
 		
 		//Draw Here
-		g.drawImage(Assets.goldCoin, x, 50, null);
+		if (State.getState() != null) {
+			State.getState().render(g);
+		}
 		
 		//End Drawing
 		bs.show(); // does all the buffer magic before sending to canvas
