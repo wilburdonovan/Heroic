@@ -9,6 +9,8 @@ import dev.teknikation.tilegame.gfx.Assets;
 import dev.teknikation.tilegame.gfx.ImageLoader;
 import dev.teknikation.tilegame.gfx.SpriteSheet;
 import dev.teknikation.tilegame.states.GameState;
+import dev.teknikation.tilegame.states.MenuState;
+import dev.teknikation.tilegame.states.SettingsState;
 import dev.teknikation.tilegame.states.State;
 
 public class Game implements Runnable {
@@ -25,6 +27,8 @@ public class Game implements Runnable {
 	
 	// States
 	private State gameState;
+	private State menuState;
+	private State settingsState;
 	
 
 	public Game (String title, int width, int height) {
@@ -38,6 +42,8 @@ public class Game implements Runnable {
 		Assets.init();
 		
 		gameState = new GameState ();
+		menuState = new MenuState ();
+		settingsState = new SettingsState ();
 		State.setState(gameState);
 	}
 	
