@@ -8,6 +8,7 @@ import dev.teknikation.tilegame.display.Display;
 import dev.teknikation.tilegame.gfx.Assets;
 import dev.teknikation.tilegame.gfx.ImageLoader;
 import dev.teknikation.tilegame.gfx.SpriteSheet;
+import dev.teknikation.tilegame.input.KeyManager;
 import dev.teknikation.tilegame.states.GameState;
 import dev.teknikation.tilegame.states.MenuState;
 import dev.teknikation.tilegame.states.SettingsState;
@@ -30,24 +31,31 @@ public class Game implements Runnable {
 	private State menuState;
 	private State settingsState;
 	
-
+	// Input
+	private KeyManager keyManager;
+	
+	
 	public Game (String title, int width, int height) {
 		this.title = title;
 		this.height = height;
 		this.width = width;
+		keyManager = new KeyManager();
 	}
 	
 	private void init () {
 		display = new Display (title, width, height);
+		display.getFrame().addKeyListener(keyManager);
 		Assets.init();
 		
-		gameState = new GameState ();
-		menuState = new MenuState ();
-		settingsState = new SettingsState ();
+		gameState = new GameState (this);
+		menuState = new MenuState (this);
+		settingsState = new SettingsState (this);
 		State.setState(gameState);
 	}
 	
 	private void tick() {
+		keyManager.tick();
+		
 		if (State.getState() != null) {
 			State.getState().tick();
 		}
@@ -105,6 +113,10 @@ public class Game implements Runnable {
 		}
 		
 		stop();
+	}
+	
+	public KeyManager getKeyManager() {
+		return keyManager;
 	}
 	
 	public synchronized void start() {
