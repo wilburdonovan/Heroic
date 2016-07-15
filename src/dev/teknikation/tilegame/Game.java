@@ -2,12 +2,9 @@ package dev.teknikation.tilegame;
 
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 import dev.teknikation.tilegame.display.Display;
 import dev.teknikation.tilegame.gfx.Assets;
-import dev.teknikation.tilegame.gfx.ImageLoader;
-import dev.teknikation.tilegame.gfx.SpriteSheet;
 import dev.teknikation.tilegame.input.KeyManager;
 import dev.teknikation.tilegame.states.GameState;
 import dev.teknikation.tilegame.states.MenuState;

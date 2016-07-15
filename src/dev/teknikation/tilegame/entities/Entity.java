@@ -4,10 +4,6 @@ import java.awt.Graphics;
 
 public abstract class Entity {
 	
-	public static final int TILE_WIDTH = 50;
-	public static final int TILE_HEIGHT = 50;
-	
-	
 	protected float x, y;
 	protected int height, width;
 	

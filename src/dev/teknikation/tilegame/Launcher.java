@@ -4,7 +4,7 @@ public class Launcher {
 
 	public static void main(String[] args) {
 		
-		Game game = new Game("ddsfs", 1024, 768);
+		Game game = new Game("HEROIC", 1280, 960);
 		game.start();
 
 	}
